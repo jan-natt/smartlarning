@@ -13,12 +13,15 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
+    role: '',
+    profile_photo_path: null,
     terms: false,
 });
 
 const submit = () => {
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
+        froceFromdata: true,
     });
 };
 </script>
@@ -31,7 +34,8 @@ const submit = () => {
             <AuthenticationCardLogo />
         </template>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" enctype="multipart/form-data">
+            <!--Name-->
             <div>
                 <InputLabel for="name" value="Name" />
                 <TextInput
@@ -73,6 +77,19 @@ const submit = () => {
                     
                 </select>
                 <InputError class="mt-2" :message="form.errors.role" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="photo" value="profile photo" />
+                <input
+                id="photo"
+                type="file"
+                @change="e=>form.profile_photo_path = e.target.files[0]"
+                accept="image/*"
+                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <InputError class="mt-2" :message="form.errors.profile_photo_path" />
+                
             </div>
 
 
